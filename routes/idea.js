@@ -14,7 +14,6 @@ router.get('/edit/:id',ensureAuthenticated,(req,res)=>{
 	idea.findOne({
 		_id:req.params.id 
 	}).then(ideaa=>{
-		console.log(ideaa);
 		res.render('ideas/edit',{
 			ideaa:ideaa
 		})
@@ -43,7 +42,6 @@ router.delete('/:id',ensureAuthenticated,(req,res)=>{
 });
 /*posting ideas*/
 router.post('/',ensureAuthenticated,(req,res)=>{
-	console.log(req);
 	let err = [];
 	if(!req.body.title){
 		err.push({text:'Please enter the title'});
