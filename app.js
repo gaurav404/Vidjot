@@ -18,25 +18,36 @@ mongoose.connect(dbURI)
 });
 
 // passport config
-const pass = require('./passport/passport');
+const pass = require('./config/passport');
 pass(passport);
 // ROUTES 
 const ideas = require('./routes/idea');
 const users = require('./routes/users');
 /* */
-
-
 const app = express();
 
 app.engine('handlebars',exhbs({
-	defaultLayout: 'main'
+	defaultLayout: 'main',
+	helpers:{
+		firstname:(name)=>{
+			name = name.split(" ")[0];
+			return name[0].toUpperCase()+name.slice(1);
+		}
+	}
 }));
 
 app.set('view engine','handlebars');
 
 app.use(express.static(path.join( __dirname,'public')));
+/*app.use(express.static(__dirname+'/public'));*/
 app.use(bodyparser.urlencoded({extended:false}));
 app.use(bodyparser.json());
+/*
+	app.use(bodyParser.json()) basically tells the system that you want json to be used.
+
+	bodyParser.urlencoded({extended: ...}) basically tells the system whether you want to use a simple algorithm for shallow parsing 
+	(i.e. false) or complex algorithm for deep parsing that can deal with nested objects (i.e. true).
+*/
 app.use(methodOverride('_method'));
 app.use(session({
 	secret:'secret',

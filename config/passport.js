@@ -3,7 +3,9 @@ const mongoose = require('mongoose');
 const bcrypt = require('bcryptjs');
 
 const User = require('../models/user.model');
-
+/*
+	http://walidhosseini.com/journal/2014/10/18/passport-local-strategy-auth.html
+*/
 module.exports = function(passport){
 	passport.use(new LocalStrategy({usernameField:'email'},(email,password,done)=>{
 		User.findOne({email:email},(err,user)=>{
@@ -32,3 +34,23 @@ module.exports = function(passport){
 		});
 	});
 }
+/*
+passport.serializeUser(function(user, done) {
+    done(null, user.id);
+                 |
+});              | 
+                 |
+                 |____________________> saved to session req.session.passport.user = {id:'..'}
+                                   |
+                                  \|/           
+passport.deserializeUser(function(id, done) {
+                   ________________|
+                   |
+                  \|/ 
+    User.findById(id, function(err, user) {
+        done(err, user);
+                   |______________>user object attaches to the request as req.user
+
+ });
+  });
+*/
